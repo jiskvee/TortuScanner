@@ -1,0 +1,29 @@
+DIM chungus AS INT
+LET chungus = 1 + 1
+
+DIM amongus AS REAL
+LET amongus = chungus + 0.2
+
+REM prueba de comentario
+LET remolacha = 67
+
+DIM yo AS INT
+INPUT yo
+
+PRINT chungus, amongus, yo
+
+IF yo <= chungus THEN
+    PRINT "big chungus gana"
+ELSE
+    PRINT "hacker"
+ENDIF
+
+DIM i AS INT
+DIM i AS INT
+LET i = 1
+WHILE i < 10
+    PRINT i
+    LET i = i + 0.5
+WEND
+
+REM like para jesucristo ignora para satan

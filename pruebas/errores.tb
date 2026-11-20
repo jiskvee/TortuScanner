@@ -1,0 +1,11 @@
+dim hola as into
+
+LET you = 1.a
+&
+"me
+
+LET x = * 2
+IF x > 2
+	PRINT "hola"
+WHILE x > 2
+	print "hola de nuevo"
