@@ -17,7 +17,7 @@ public class NodoDIM : AstNode {
 
 public class NodoLET : AstNode {
 	public required string Variable;
-	public NodoExp? Expresion;
+	public required NodoExp Expresion;
 }
 
 public class NodoINPUT : AstNode {
@@ -29,13 +29,13 @@ public class NodoPRINT : AstNode {
 }
 
 public class NodoIF : AstNode {
-	public NodoCondicion? Condicion;
+	public required NodoCondicion Condicion;
 	public List<AstNode> CuerpoVerdadero = [];
 	public List<AstNode> CuerpoFalso = [];
 }
 
 public class NodoWHILE : AstNode {
-	public NodoCondicion? Condicion;
+	public required NodoCondicion Condicion;
 	public List<AstNode> Cuerpo = [];
 }
 

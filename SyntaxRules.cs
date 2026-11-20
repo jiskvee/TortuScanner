@@ -76,13 +76,11 @@ public partial class Syntaxer {
 
 	// ASIGNACION → LET id = EXPRESION
 	NodoLET ParseAsignacion() {
-		var node = new NodoLET{Variable = curtoken.Lexema, Linea = curtoken.Linea};
 		Consumir(TokenType.Reservada, "LET");
 		G.Print($"    [PARSING] Asignacion a variable verificada: {curtoken.Lexema}, linea: {curtoken.Linea}");
 		Consumir(TokenType.Identificador);
 		Consumir(TokenType.Igual);
-		node.Expresion = ParseExpresion();
-		return node;	
+		return new NodoLET{Variable = curtoken.Lexema, Linea = curtoken.Linea, Expresion = ParseExpresion()};	
 	}
 
 
@@ -191,10 +189,9 @@ public partial class Syntaxer {
 
 	// CONDICIONAL → IF CONDICION THEN SALTO LINEAS OPCIONAL_ELSE ENDIF
 	NodoIF ParseCondicional() {
-		var nodo = new NodoIF();
 		Consumir(TokenType.Reservada, "IF");
 		AbrirBloque("IF");
-		nodo.Condicion = ParseCondicion();
+		var nodo = new NodoIF{Condicion = ParseCondicion()};
 		Consumir(TokenType.Reservada, "THEN");
 		Consumir(TokenType.Salto);
 		while (curtoken != TokenType.EOF && !(curtoken == TokenType.Reservada && (curtoken.Is("ELSE") || curtoken.Is("ENDIF")))) {
@@ -249,10 +246,9 @@ public partial class Syntaxer {
 
 	// CICLO_WHILE → WHILE CONDICION SALTO LINEAS WEND
 	NodoWHILE ParseCicloWhile() {
-		var node = new NodoWHILE();
 		Consumir(TokenType.Reservada, "WHILE");
 		AbrirBloque("WHILE");
-		node.Condicion = ParseCondicion();
+		var node = new NodoWHILE{Condicion = ParseCondicion()};
 		Consumir(TokenType.Salto);
 		while (curtoken != TokenType.EOF && !(curtoken == TokenType.Reservada && curtoken.Is("WEND"))) {
 			var l = ParseLinea();
