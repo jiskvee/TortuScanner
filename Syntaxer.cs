@@ -38,7 +38,6 @@ public partial class Syntaxer {
 			Avanzar();
 		else
 			ModoPanico($"Se esperaba un token de tipo '{tipoEsperado}', pero se encontro '{curtoken.Tipo}' ('{curtoken.Lexema}')");
-		//throw new Exception(G.SintaxError(curtoken.Linea, $"Se esperaba un token de tipo '{tipoEsperado}', pero se encontro '{curtoken.Tipo}' ('{curtoken.Lexema}')"));
 	}
 	// palabras reservadas
 	private void Consumir(TokenType tipoEsperado, string lexemaEsperado) {

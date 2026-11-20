@@ -6,7 +6,6 @@ public partial class Syntaxer {
 
 	// LINEAS → LINEA LINEAS | epsilon
 	NodoPrograma ParseLineas() {
-		//while (curtoken != TokenType.EOF) ParseLinea();
 		var nodo = new NodoPrograma();
 		while (curtoken != TokenType.EOF) {
 			var instruccion = ParseLinea();
@@ -59,35 +58,30 @@ public partial class Syntaxer {
 
 	// DECLARACION → DIM id AS TIPO
 	NodoDIM ParseDeclaracion() {
-		var node = new NodoDIM();
+		var node = new NodoDIM{Linea = curtoken.Linea, NombreVariable = curtoken.Lexema, TipoDato = "ERROR"};
 		Consumir(TokenType.Reservada, "DIM");
 		G.Print($"    [PARSING] Creacion de variable verificada: {curtoken.Lexema}, linea: {curtoken.Linea}");
-		node.NombreVariable = curtoken.Lexema;
 		Consumir(TokenType.Identificador);
 		Consumir(TokenType.Reservada, "AS");
 		if (curtoken == TokenType.Reservada && (curtoken.Is("INT") || curtoken.Is("REAL"))) {
 			var datype = curtoken.Lexema.ToUpper();
-			G.Print($"    [PARSING] Tipo de variable verificada: {datype}, linea: {curtoken.Linea}");
 			node.TipoDato = datype;
-			//symtable.Put(node.NombreVariable, node.TipoDato, curtoken.Linea);
+			G.Print($"    [PARSING] Tipo de variable verificada: {datype}, linea: {curtoken.Linea}");
 			Avanzar();
 		} else
 			ModoPanico($"Se esperaba tipo de dato valido (INT o REAL), pero se encontro '{curtoken.Lexema}'");
-		node.Linea = curtoken.Linea;
 		return node;
 	}
 
 
 	// ASIGNACION → LET id = EXPRESION
 	NodoLET ParseAsignacion() {
-		var node = new NodoLET();
+		var node = new NodoLET{Variable = curtoken.Lexema, Linea = curtoken.Linea};
 		Consumir(TokenType.Reservada, "LET");
 		G.Print($"    [PARSING] Asignacion a variable verificada: {curtoken.Lexema}, linea: {curtoken.Linea}");
-		node.Variable = curtoken.Lexema;
 		Consumir(TokenType.Identificador);
 		Consumir(TokenType.Igual);
 		node.Expresion = ParseExpresion();
-		node.Linea = curtoken.Linea;
 		return node;	
 	}
 

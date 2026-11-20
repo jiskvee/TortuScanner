@@ -27,6 +27,7 @@ public partial class Semantixer(SymbolTable table) {
 			case NodoIF iff: VisitarIF(iff); break;
 			case NodoWHILE whi: VisitarWHILE(whi); break;
 			case NodoCondicion con: VisitarCondicion(con); break;
+			case NodoExp exp: VisitarExpresion(exp); break;
 		}
 	}
 }

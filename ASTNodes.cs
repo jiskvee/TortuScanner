@@ -11,17 +11,17 @@ public class NodoLineas : AstNode {
 
 // instrucciones
 public class NodoDIM : AstNode {
-	public string? NombreVariable;
-	public string? TipoDato;
+	public required string NombreVariable;
+	public string TipoDato = "INT";
 }
 
 public class NodoLET : AstNode {
-	public string? Variable;
+	public required string Variable;
 	public NodoExp? Expresion;
 }
 
 public class NodoINPUT : AstNode {
-	public string? Variable;
+	public required string Variable;
 }
 
 public class NodoPRINT : AstNode {
@@ -41,27 +41,27 @@ public class NodoWHILE : AstNode {
 
 // expresiones
 public abstract class NodoExp : AstNode {
-	public string? TipoDato;
+	public string TipoDato = "INT";
 }
 
 public class NodoOperacion : NodoExp {
-	public NodoExp? Izquierda;
-	public string? Operador;
-	public NodoExp? Derecha;
+	public required NodoExp Izquierda;
+	public required string Operador;
+	public required NodoExp Derecha;
 }
 
 public class NodoLiteral : NodoExp {
-	public string? Valor;
+	public required string Valor;
 	public bool EsCadena;
 }
 
 public class NodoVariableRef : NodoExp {
-	public string? Nombre;
+	public required string Nombre;
 }
 
 // condiciones
 public class NodoCondicion : AstNode {
-	public NodoExp? Izquierda;
-	public string? OperadorRelacional;
-	public NodoExp? Derecha;
+	public required NodoExp Izquierda;
+	public required string OperadorRelacional;
+	public required NodoExp Derecha;
 }
