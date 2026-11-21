@@ -6,7 +6,7 @@ public class Cuadruplo {
 	public override string ToString() => $"({Op}, {Arg1}, {Arg2}, {Resultado})";
 }
 
-public class CuadruploInador {
+public partial class Cuadruplexer {
 	int tempcount = 0;
 	int labelcount = 0;
 	string NuevoTemp() => $"t{tempcount++}";
@@ -22,11 +22,30 @@ public class CuadruploInador {
 		});
 	}
 
-	public void Generar(NodoLineas programa) {
-		foreach (var linea in programa.Lineas) {
-			// hacer cosas bien fregonas como recorrer el arbol
-			//VisitarNodo(linea);
-			// y asi
+	public void Generar(NodoPrograma programa, bool imprimir = false) {
+		foreach (var linea in programa.Instrucciones)
+			VisitarNodo(linea);
+		if (imprimir) {
+			Console.WriteLine();
+			G.Print("Cuadruplos generados exitosamente!! asombroso", ConsoleColor.Green);
+			var i = 1;
+			foreach (Cuadruplo cuad in Cuadruplos) {
+				G.Print($"{i}. " + cuad.ToString(), ConsoleColor.White);
+				i++;
+			}
+		}
+	}
+
+	public void VisitarNodo(AstNode node) {
+		switch (node) {
+			//case NodoDIM dim: GenerarDIM(dim); break;
+			case NodoLET let: GenerarLET(let); break;
+			case NodoINPUT inp: GenerarINPUT(inp); break;
+			case NodoPRINT pri: GenerarPRINT(pri); break;
+			case NodoIF iff: GenerarIF(iff); break;
+			case NodoWHILE whi: GenerarWHILE(whi); break;
+			case NodoCondicion con: GenerarCondicion(con); break;
+			case NodoExp exp: GenerarExpresion(exp); break;
 		}
 	}
 }
