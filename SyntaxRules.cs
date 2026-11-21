@@ -1,6 +1,5 @@
 public partial class Syntaxer {
-	// G.Print($"    [PARSING] Expresion verificada: {curtoken.Lexema}, linea: {curtoken.Linea}");
-	
+
 	// PROGRAMA → LINEAS
 	NodoPrograma ParsePrograma() => ParseLineas();
 
@@ -58,29 +57,30 @@ public partial class Syntaxer {
 
 	// DECLARACION → DIM id AS TIPO
 	NodoDIM ParseDeclaracion() {
-		var node = new NodoDIM{Linea = curtoken.Linea, NombreVariable = curtoken.Lexema, TipoDato = "ERROR"};
+		string tipodato = "ERROR";
 		Consumir(TokenType.Reservada, "DIM");
-		G.Print($"    [PARSING] Creacion de variable verificada: {curtoken.Lexema}, linea: {curtoken.Linea}");
+		var nombre = curtoken.Lexema;
+		G.Print($"    [PARSING] Creacion de variable verificada: {curtoken.Lexema}, linea: {curtoken.Linea}", log);
 		Consumir(TokenType.Identificador);
 		Consumir(TokenType.Reservada, "AS");
 		if (curtoken == TokenType.Reservada && (curtoken.Is("INT") || curtoken.Is("REAL"))) {
-			var datype = curtoken.Lexema.ToUpper();
-			node.TipoDato = datype;
-			G.Print($"    [PARSING] Tipo de variable verificada: {datype}, linea: {curtoken.Linea}");
+			tipodato = curtoken.Lexema.ToUpper();
+			G.Print($"    [PARSING] Tipo de variable verificada: {tipodato}, linea: {curtoken.Linea}", log);
 			Avanzar();
 		} else
 			ModoPanico($"Se esperaba tipo de dato valido (INT o REAL), pero se encontro '{curtoken.Lexema}'");
-		return node;
+		return new NodoDIM{Linea = curtoken.Linea, NombreVariable = nombre, TipoDato = tipodato};
 	}
 
 
 	// ASIGNACION → LET id = EXPRESION
 	NodoLET ParseAsignacion() {
 		Consumir(TokenType.Reservada, "LET");
-		G.Print($"    [PARSING] Asignacion a variable verificada: {curtoken.Lexema}, linea: {curtoken.Linea}");
+		G.Print($"    [PARSING] Asignacion a variable verificada: {curtoken.Lexema}, linea: {curtoken.Linea}", log);
+		var nombre = curtoken.Lexema;
 		Consumir(TokenType.Identificador);
 		Consumir(TokenType.Igual);
-		return new NodoLET{Variable = curtoken.Lexema, Linea = curtoken.Linea, Expresion = ParseExpresion()};	
+		return new NodoLET{Variable = nombre, Linea = curtoken.Linea, Expresion = ParseExpresion()};
 	}
 
 
@@ -129,7 +129,7 @@ public partial class Syntaxer {
 			Consumir(TokenType.CerrarParentesis); // )
 			return node;
 		} else if (curtoken == TokenType.Identificador || curtoken == TokenType.NumEntero || curtoken == TokenType.NumReal) {
-			G.Print($"    [PARSING] Expresion verificada: {curtoken.Lexema}, linea: {curtoken.Linea}");
+			G.Print($"    [PARSING] Expresion verificada: {curtoken.Lexema}, linea: {curtoken.Linea}", log);
 			NodoExp node;
 			if (curtoken == TokenType.Identificador) node = new NodoVariableRef{Nombre = curtoken.Lexema};
 			else node = new NodoLiteral{Valor = curtoken.Lexema};
@@ -145,7 +145,7 @@ public partial class Syntaxer {
 	// ENTRADA → INPUT id
 	NodoINPUT ParseEntrada() {
 		Consumir(TokenType.Reservada, "INPUT");
-		G.Print($"    [PARSING] Leer variable {curtoken.Lexema}, linea: {curtoken.Linea}");
+		G.Print($"    [PARSING] Leer variable {curtoken.Lexema}, linea: {curtoken.Linea}", log);
 		var node = new NodoINPUT{Variable = curtoken.Lexema};
 		Consumir(TokenType.Identificador);
 		return node;
@@ -170,7 +170,7 @@ public partial class Syntaxer {
 	// ELEM_SALIDA → cadena | EXPRESION
 	AstNode ParseElemSalida() {
 		if (curtoken == TokenType.Cadena) {
-			G.Print($"    [PARSING] Cadena impresa {curtoken.Lexema}, linea: {curtoken.Linea}");
+			G.Print($"    [PARSING] Cadena impresa {curtoken.Lexema}, linea: {curtoken.Linea}", log);
 			var node = new NodoLiteral{Valor = curtoken.Lexema, EsCadena = true};
 			Avanzar();
 			return node;
@@ -233,7 +233,7 @@ public partial class Syntaxer {
 			curtoken.Tipo == TokenType.MayorIgual ||
 			curtoken.Tipo == TokenType.Igual ||
 			curtoken.Tipo == TokenType.DiferenteDe) {
-			G.Print($"    [PARSING] Operador relacional verificado: {curtoken.Lexema}, linea: {curtoken.Linea}");
+			G.Print($"    [PARSING] Operador relacional verificado: {curtoken.Lexema}, linea: {curtoken.Linea}", log);
 			var op = curtoken.Lexema;
 			Avanzar();
 			return op;

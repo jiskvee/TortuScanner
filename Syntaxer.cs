@@ -2,11 +2,13 @@ public partial class Syntaxer {
 	Lexer lexer;
 	SymbolTable symtable;
 	Token curtoken;
+	bool log = false;
 
-	public Syntaxer(Lexer lex, SymbolTable table) {
+	public Syntaxer(Lexer lex, SymbolTable table, bool logs = false) {
 		lexer = lex;
 		symtable = table;
 		curtoken = new(TokenType.Comentario, "", 0);
+		log = logs;
 		Avanzar();
 	}
 
@@ -30,7 +32,7 @@ public partial class Syntaxer {
 
 	void Avanzar() {
 		curtoken = lexer.NextToken(symtable);
-		Console.WriteLine(curtoken);
+		if (log) Console.WriteLine(curtoken);
 	}
 
 	private void Consumir(TokenType tipoEsperado) {
