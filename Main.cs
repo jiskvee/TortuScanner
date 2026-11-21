@@ -14,10 +14,12 @@ var lexer = new Lexer(content);
 // analisis sintactico
 var sintaxer = new Syntaxer(lexer, symtable);
 var ast = sintaxer.Analizar();
+if (sintaxer.Errores.Count > 0) return;
 
 // analisis semantico
 var semantixer = new Semantixer(symtable);
 semantixer.Analizar(ast);
+if (semantixer.Errores.Count > 0) return;
 
 // generacion de codigo intermedio
 var cuadruplexer = new Cuadruplexer();
@@ -28,7 +30,6 @@ symtable.Print();
 
 //Console.WriteLine();
 //foreach (var item in ast.Instrucciones) Console.WriteLine(item);
-
 
 
 public static class G {

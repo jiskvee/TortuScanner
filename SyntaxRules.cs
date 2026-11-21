@@ -27,7 +27,7 @@ public partial class Syntaxer {
 		if (curtoken == TokenType.Salto)
 			Consumir(TokenType.Salto);
 		else if (curtoken != TokenType.EOF)
-			ModoPanico($"Se esperaba salto de linea o fin de instruccion, pero se encontro '{curtoken.Lexema}'");
+			ModoPanico($"Se esperaba salto de linea o instruccion, pero se encontro '{curtoken.Lexema}'");
 		return inst;
 	}
 
