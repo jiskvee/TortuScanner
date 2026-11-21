@@ -68,9 +68,9 @@ public partial class Cuadruplexer {
 	void GenerarWHILE(NodoWHILE node) {
 		var inicio = NuevaEtiqueta();
 		var fin = NuevaEtiqueta();
-		var cond = GenerarCondicion(node.Condicion);
 
 		Gen("LABEL", "_", "_", inicio);
+		var cond = GenerarCondicion(node.Condicion);
 		Gen("JZ", cond, "_", fin);
 		foreach (var inst in node.Cuerpo) VisitarNodo(inst);
 		Gen("JMP", "_", "_", inicio);
