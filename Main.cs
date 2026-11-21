@@ -3,29 +3,36 @@
 // leer archivo e imprimirlo como referencia
 string filename = Path.Combine(Directory.GetCurrentDirectory(), "pruebas/", "test.tb");
 string content = File.ReadAllText(filename);
-Console.WriteLine($"////\n{content}\n////");
+Console.WriteLine(new string('/', 55));
+Console.WriteLine(content);
+Console.WriteLine(new string('/', 55));
 
+// analisis lexico
 var symtable = new SymbolTable();
 var lexer = new Lexer(content);
+
+// analisis sintactico
 var sintaxer = new Syntaxer(lexer, symtable);
 var ast = sintaxer.Analizar();
 
+// analisis semantico
 var semantixer = new Semantixer(symtable);
 semantixer.Analizar(ast);
 
+// generacion de codigo intermedio
 var cuadruplexer = new Cuadruplexer();
 cuadruplexer.Generar(ast, true);
-
-//Console.WriteLine();
-//foreach (var item in ast.Instrucciones) Console.WriteLine(item);
 
 G.Print("\nTabla de simbolos:", ConsoleColor.Cyan);
 symtable.Print();
 
+//Console.WriteLine();
+//foreach (var item in ast.Instrucciones) Console.WriteLine(item);
+
+
 
 public static class G {
 	public const StringComparison ic = StringComparison.OrdinalIgnoreCase;
-	public static string SintaxError(int linea, string detalles) => $"!> Error sintantico en linea {linea}: {detalles}";
 	public static void Print(string line, ConsoleColor color = ConsoleColor.Blue) {
 		Console.ForegroundColor = color;
 		Console.WriteLine(line);
