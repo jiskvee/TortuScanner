@@ -6,7 +6,8 @@ public class Cuadruplo {
 	public override string ToString() => $"({Op}, {Arg1}, {Arg2}, {Resultado})";
 }
 
-public partial class Cuadruplexer {
+public partial class Cuadruplexer(SymbolTable table) {
+	SymbolTable symtable = table;
 	int tempcount = 0;
 	int labelcount = 0;
 	string NuevoTemp() => $"t{tempcount++}";

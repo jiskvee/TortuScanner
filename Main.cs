@@ -22,7 +22,7 @@ semantixer.Analizar(ast);
 if (semantixer.Errores.Count > 0) return;
 
 // generacion de codigo intermedio
-var cuadruplexer = new Cuadruplexer();
+var cuadruplexer = new Cuadruplexer(symtable);
 cuadruplexer.Generar(ast, true);
 
 G.Print("\nTabla de simbolos:", ConsoleColor.Cyan);

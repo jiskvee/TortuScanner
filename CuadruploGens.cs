@@ -1,7 +1,16 @@
 public partial class Cuadruplexer {
 	void GenerarLET(NodoLET node) {
 		var dir = GenerarExpresion(node.Expresion);
+		var tipo = symtable.TipoDe(node.Variable);
+		if (tipo == "REAL" && node.Expresion.TipoDato == "INT") dir = AsegurarReal(dir);
 		Gen("=", dir, "_", node.Variable);
+	}
+
+	string AsegurarReal(string dir, string tipo = "INT") {
+		if (string.Equals(tipo, "REAL", G.ic)) return dir;
+		var temp = NuevoTemp();
+		Gen("TO_REAL", dir, "_", temp);
+		return temp;
 	}
 
 	string GenerarExpresion(NodoExp exp) {
@@ -13,6 +22,10 @@ public partial class Cuadruplexer {
 			case NodoOperacion op:
 				var izq = GenerarExpresion(op.Izquierda);
 				var der = GenerarExpresion(op.Derecha);
+				if (op.Izquierda.TipoDato == "REAL" || op.Derecha.TipoDato == "REAL") {
+					izq = AsegurarReal(izq, op.Izquierda.TipoDato);
+					der = AsegurarReal(der, op.Derecha.TipoDato);
+				}
 				var temp = NuevoTemp();
 				Gen(op.Operador, izq, der, temp);
 				return temp;
@@ -60,6 +73,10 @@ public partial class Cuadruplexer {
 	string GenerarCondicion(NodoCondicion cond) {
 		var izq = GenerarExpresion(cond.Izquierda);
 		var der = GenerarExpresion(cond.Derecha);
+		if (cond.Izquierda.TipoDato == "REAL" || cond.Derecha.TipoDato == "REAL") {
+			izq = AsegurarReal(izq, cond.Izquierda.TipoDato);
+			der = AsegurarReal(der, cond.Derecha.TipoDato);
+		}
 		var temp = NuevoTemp();
 		Gen(cond.OperadorRelacional, izq, der, temp);
 		return temp;
