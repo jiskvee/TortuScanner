@@ -3,7 +3,7 @@ public partial class Cuadruplexer {
 		var dir = GenerarExpresion(node.Expresion);
 		var tipo = symtable.TipoDe(node.Variable);
 		if (tipo == "REAL" && node.Expresion.TipoDato == "INT") dir = AsegurarReal(dir);
-		Gen("=", dir, "_", node.Variable);
+		Gen("SET", dir, "_", node.Variable); // cambie este cuadruplo a SET, se podia confundir con el = de comparar
 	}
 
 	string AsegurarReal(string dir, string tipo = "INT") {

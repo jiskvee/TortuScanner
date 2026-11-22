@@ -23,7 +23,7 @@ public partial class Cuadruplexer(SymbolTable table) {
 		});
 	}
 
-	public void Generar(NodoPrograma programa, bool imprimir = false) {
+	public List<Cuadruplo> Generar(NodoPrograma programa, bool imprimir = false) {
 		foreach (var ins in programa.Instrucciones) VisitarNodo(ins);
 
 		// la generacion de cuadruplos realmente nunca falla
@@ -39,6 +39,7 @@ public partial class Cuadruplexer(SymbolTable table) {
 				i++;
 			}
 		}
+		return Cuadruplos;
 	}
 
 	public void VisitarNodo(AstNode node) {
