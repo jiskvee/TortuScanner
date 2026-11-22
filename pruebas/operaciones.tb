@@ -1,0 +1,8 @@
+DIM fresa AS REAL
+DIM mango AS INT
+DIM limon as REAL
+
+LET fresa = 43.5
+LET mango = 2
+LET limon = fresa / mango
+PRINT limon

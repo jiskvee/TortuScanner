@@ -1,5 +1,5 @@
 public partial class Emuexer {
-	const int escalaReal = 100;
+	static readonly int escalaReal = 10;
 
 	List<string> Data = [];
 	List<string> Code = [];
@@ -15,7 +15,7 @@ public partial class Emuexer {
         }
     }
 
-	public string Generar(IEnumerable<Cuadruplo> cuadruplos) {
+	public string Generar(List<Cuadruplo> cuadruplos) {
 		Data.Clear();
 		Code.Clear();
 		Cadenas.Clear();
