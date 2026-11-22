@@ -24,12 +24,14 @@ public partial class Cuadruplexer(SymbolTable table) {
 	}
 
 	public void Generar(NodoPrograma programa, bool imprimir = false) {
-		foreach (var linea in programa.Instrucciones)
-			VisitarNodo(linea);
+		foreach (var ins in programa.Instrucciones) VisitarNodo(ins);
 
+		// la generacion de cuadruplos realmente nunca falla
+		// si se llego a esta fase es porque el programa ya no trae errores
 		Console.WriteLine();
 		G.Print("Cuadruplos generados exitosamente!! asombroso", ConsoleColor.Green);
 
+		// imprime los cuadruplos para tomar un vistazo 👀 
 		if (imprimir) {
 			var i = 1;
 			foreach (Cuadruplo cuad in Cuadruplos) {
@@ -41,7 +43,7 @@ public partial class Cuadruplexer(SymbolTable table) {
 
 	public void VisitarNodo(AstNode node) {
 		switch (node) {
-			//case NodoDIM dim: GenerarDIM(dim); break;
+			//case NodoDIM di- NO!!!!!!!! DIM no genera cuadruplos, la tabla de simbolos ya tiene todo lo que necesitamos
 			case NodoLET let: GenerarLET(let); break;
 			case NodoINPUT inp: GenerarINPUT(inp); break;
 			case NodoPRINT pri: GenerarPRINT(pri); break;

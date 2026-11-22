@@ -1,3 +1,6 @@
+// el analisis semantico no crea nada nuevo, solo mejora lo que ya teniamos
+// aqui obtenemos los tipos de las variables y expresiones
+
 public partial class Semantixer(SymbolTable table) {
 	SymbolTable symtable = table;
 	public List<string> Errores = [];

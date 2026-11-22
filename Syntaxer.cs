@@ -24,6 +24,7 @@ public partial class Syntaxer {
 		}
 	}
 
+	// los errores van en una lista para ser reportados todos al final
 	void ReportarError(string msg) {
 		Errores.Add($"Error sintactico en linea {curtoken.Linea}: {msg}");
 	}
@@ -44,7 +45,7 @@ public partial class Syntaxer {
 		else
 			ModoPanico($"Se esperaba un token de tipo '{tipoEsperado}', pero se encontro '{curtoken.Tipo}' ('{curtoken.Lexema}')");
 	}
-	// palabras reservadas
+	// para palabras reservadas (son lexemas especificos)
 	private void Consumir(TokenType tipoEsperado, string lexemaEsperado) {
 		if (curtoken.Tipo == tipoEsperado && curtoken.Is(lexemaEsperado))
 			Avanzar();
@@ -70,7 +71,9 @@ public partial class Syntaxer {
 			ReportarError($"Se esperaban instrucciones o fin de archivo, pero sobra token '{curtoken.Lexema}'");
 
 
-		// fin de lexico
+		// fin de lexico, esto esta aqui por que nuestro Lexer no emite una lista de tokens,
+		// el lexer no sabe nada asi que el metodo NextToken es como un bebe tomando un bloque
+		// y pasandoselo al adulto (Syntaxer) para que haga las cosas complicadas
 		Console.WriteLine();
 		if (ErroresLexicos.Count > 0) {
 			Console.WriteLine("=== ERRORES LEXICOS REPORTADOS ===");
