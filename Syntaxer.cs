@@ -4,6 +4,9 @@ public partial class Syntaxer {
 	Token curtoken;
 	bool log = false;
 
+	public List<string> Errores = [];
+	public List<string> ErroresLexicos = [];
+
 	public Syntaxer(Lexer lex, SymbolTable table, bool logs = false) {
 		lexer = lex;
 		symtable = table;
@@ -21,7 +24,6 @@ public partial class Syntaxer {
 		}
 	}
 
-	public List<string> Errores = [];
 	void ReportarError(string msg) {
 		Errores.Add($"Error sintactico en linea {curtoken.Linea}: {msg}");
 	}
@@ -32,6 +34,7 @@ public partial class Syntaxer {
 
 	void Avanzar() {
 		curtoken = lexer.NextToken(symtable);
+		if ((int)curtoken.Tipo >= 500) ErroresLexicos.Add($"Linea {curtoken.Linea}: {curtoken.Tipo} en '{curtoken.Lexema}'");
 		if (log) Console.WriteLine(curtoken);
 	}
 
@@ -66,7 +69,18 @@ public partial class Syntaxer {
 		if (curtoken != TokenType.EOF)
 			ReportarError($"Se esperaban instrucciones o fin de archivo, pero sobra token '{curtoken.Lexema}'");
 
-		// fin
+
+		// fin de lexico
+		Console.WriteLine();
+		if (ErroresLexicos.Count > 0) {
+			Console.WriteLine("=== ERRORES LEXICOS REPORTADOS ===");
+			foreach (var err in ErroresLexicos)
+				G.Print(err, ConsoleColor.Red);
+			return programa;
+		} else
+			G.Print("Analisis lexico completado sin errores!! omg", ConsoleColor.Green);
+
+		// fin de sintactico
 		Console.WriteLine();
 		if (Errores.Count > 0) {
 			Console.WriteLine("=== ERRORES SINTACTICOS REPORTADOS ===");
