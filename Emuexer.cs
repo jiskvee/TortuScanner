@@ -47,10 +47,7 @@ public partial class Emuexer {
 		s.AppendLine("    MOV AX, @DATA");
 		s.AppendLine("    MOV DS, AX");
 		s.AppendLine();
-		foreach (var linea in Code) {
-			if (linea.EndsWith(':')) s.AppendLine(linea);
-			else s.AppendLine("    " + linea);
-		}
+		foreach (var linea in Code) s.AppendLine("    " + linea);
 		s.AppendLine();
 		s.AppendLine("    MOV AH, 4CH");
 		s.AppendLine("    INT 21H");
@@ -98,6 +95,7 @@ public partial class Emuexer {
         bool resReal = EsReal(q.Resultado);
         bool opReal = resReal || EsReal(q.Arg1) || EsReal(q.Arg2);
 
+		Code.Add($"; {q}");
         switch (q.Op) {
             case "SET":
                 Code.Add($"MOV AX, {FormatOp(q.Arg1, resReal)}");
