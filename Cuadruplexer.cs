@@ -26,9 +26,11 @@ public partial class Cuadruplexer(SymbolTable table) {
 	public void Generar(NodoPrograma programa, bool imprimir = false) {
 		foreach (var linea in programa.Instrucciones)
 			VisitarNodo(linea);
+
+		Console.WriteLine();
+		G.Print("Cuadruplos generados exitosamente!! asombroso", ConsoleColor.Green);
+
 		if (imprimir) {
-			Console.WriteLine();
-			G.Print("Cuadruplos generados exitosamente!! asombroso", ConsoleColor.Green);
 			var i = 1;
 			foreach (Cuadruplo cuad in Cuadruplos) {
 				G.Print($"{i}. " + cuad.ToString(), ConsoleColor.White);
