@@ -11,7 +11,7 @@ public partial class Emuexer {
 	public Emuexer(SymbolTable symtable) {
         foreach (var sym in symtable.Dict.Values) {
             if (string.Equals(sym.Tipo, "REAL", G.ic))
-                VarReales.Add(sym.Lexema);
+                VarReales.Add(MapearVariable(sym.Lexema));
         }
     }
 
@@ -24,8 +24,14 @@ public partial class Emuexer {
 		compcount = 0;
 
 		foreach (var q in cuadruplos) {
-			RegistrarOperandos(q);
-			ProcesarCuadruplo(q);
+			var vq = new Cuadruplo{
+				Op = q.Op,
+				Arg1 = MapearVariable(q.Arg1),
+				Arg2 = MapearVariable(q.Arg2),
+				Resultado = MapearVariable(q.Resultado)
+			};
+			RegistrarOperandos(vq);
+			ProcesarCuadruplo(vq);
 		}
 
 		var s = new System.Text.StringBuilder();
@@ -79,12 +85,12 @@ public partial class Emuexer {
 
 	void RegistrarSiVariable(string val) {
 		if (string.IsNullOrEmpty(val) || val == "_") return; // nada o '_' que es nuestro simbolo de nada
-		if (val.StartsWith('"')) return; // seria una cadena
-		if (int.TryParse(val, out _)) return; // intenta parsear a integer para ver si es un numero
-		if (val.StartsWith('L') && int.TryParse(val[1..], out _)) return; // mismo de arriba mas si empieza con L (para no registrar etiquetas)
+		if (EsCadenaLiteral(val)) return;
+		if (EsNumeroLiteral(val)) return;
+		if (EsEtiqueta(val)) return;
 
 		if (Variables.Add(val)) {
-			Data.Add($"v_{val} DW 0");
+			Data.Add($"{val} DW 0");
 		}
 	}
 

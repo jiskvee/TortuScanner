@@ -2,8 +2,7 @@ using System.Globalization;
 using System.Text;
 
 public partial class Emuexer {
-	// like si dejarias que les cayera un yunque en la cabeza a los siguientes 3 metodos
-	// spoiler: ||hmm yo si||
+	// ya me cayeron bien
 	bool EsReal(string val) {
 		if (VarReales.Contains(val)) return true;
 		if (val == "_" || string.IsNullOrWhiteSpace(val) || EsCadenaLiteral(val)) return false;
@@ -19,9 +18,23 @@ public partial class Emuexer {
 		int.TryParse(val, NumberStyles.Integer, CultureInfo.InvariantCulture, out _) ||
 		double.TryParse(val, NumberStyles.Float, CultureInfo.InvariantCulture, out _);
 
+	static bool EsTemporal(string val) =>
+		!string.IsNullOrEmpty(val) && val.Length >= 2 && val[0] == 't' && int.TryParse(val[1..], out _);
 
-	//
-	private string FormatOp(string val, bool forzarEscalaReal = false) {
+	static bool EsEtiqueta(string val) =>
+		!string.IsNullOrEmpty(val) && val.Length >= 2 && val[0] == 'L' && int.TryParse(val[1..], out _);
+
+
+	// cambia variables para tener el sufijo v_
+	string MapearVariable(string val) {
+		if (string.IsNullOrWhiteSpace(val) || val == "_") return val;
+		if (EsCadenaLiteral(val) || EsNumeroLiteral(val) || EsEtiqueta(val)) return val;
+		if (EsTemporal(val)) return val;
+		return val.StartsWith("v_") ? val : $"v_{val}";
+	}
+
+	// cambia los numeros reales a ser enteros escalados
+	string FormatOp(string val, bool forzarEscalaReal = false) {
         if (EsReal(val)) { // iinvariantculture porque al parecer puede dar los numeros con coma dependiendo del idioma?? babosada
             if (double.TryParse(val, NumberStyles.Float, CultureInfo.InvariantCulture, out double valReal)) {
                 int escalado = (int)Math.Round(valReal * escalaReal);
@@ -29,7 +42,6 @@ public partial class Emuexer {
             }
             return val;
         }
-
         if (forzarEscalaReal && int.TryParse(val, NumberStyles.Integer, CultureInfo.InvariantCulture, out int valInt))
             return (valInt * escalaReal).ToString(CultureInfo.InvariantCulture);
 
