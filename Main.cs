@@ -23,7 +23,12 @@ if (semantixer.Errores.Count > 0) return;
 
 // generacion de codigo intermedio
 var cuadruplexer = new Cuadruplexer(symtable);
-cuadruplexer.Generar(ast, true);
+var cuads = cuadruplexer.Generar(ast);
+
+// generacion de codigo objeto
+var emuexer = new Emuexer(symtable);
+var asm = emuexer.Generar(cuads);
+Console.WriteLine(asm);
 
 G.Print("\nTabla de simbolos:", ConsoleColor.Cyan);
 symtable.Print();
